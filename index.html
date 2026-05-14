@@ -582,6 +582,20 @@ function loadSample(id) {
     comp.autoView(800);
     hideLoding();
     buildMetrics(entry, PANELS[currentPanel][0]);
+    // Populate sequence bar
+    const sb = document.getElementById('seq-bar');
+    if (sb) {
+      const dnaEl = document.getElementById('dna-seq-display');
+      const protEl = document.getElementById('prot-seq-display');
+      const dcols = {'A':'#008000','C':'#0000ff','G':'#FBA922','T':'#ff0000'};
+      if (dnaEl && entry.dna_seq) {
+        dnaEl.innerHTML = [...entry.dna_seq].map(b => `<span style="color:${dcols[b]||'#ccc'}">${b}</span>`).join('');
+      }
+      if (protEl && entry.prot_seq) {
+        protEl.textContent = entry.prot_seq;
+      }
+      sb.style.display = 'block';
+    }
     if (showRef && entry.tier !== 'ref') loadReference();
   });
 }
@@ -889,7 +903,7 @@ function buildMetrics(entry, refEntry) {
   }
 
   // Draw radar chart
-  buildRadar(entry, ref);
+  buildRadar(entry, refEntry);
 }
 
 // Sequence-logo glyph paths (100×100 box, y=0 top, y=100 bottom).
