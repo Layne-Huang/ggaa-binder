@@ -201,16 +201,106 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
 .seq-card-hd{background:var(--bg4);padding:3px 10px;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border-bottom:1px solid var(--border)}
 .seq-row{display:flex;align-items:center;padding:5px 10px;overflow-x:auto;white-space:nowrap}
 .seq-row+.seq-row{border-top:1px solid var(--border)}
+#seq-bar{user-select:none}
 .seq-label{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px;min-width:44px;text-align:right;flex-shrink:0;padding-right:10px;margin-right:10px;border-right:2px solid var(--border)}
-.sb-base{display:inline-block;font-size:13px;font-weight:700;padding:1px 2px;border-radius:2px;letter-spacing:1px;transition:background .15s,outline .15s;cursor:default}
-.sb-aa{display:inline-block;font-size:11px;color:#a3a3a3;padding:1px 0.5px;border-radius:2px;transition:background .15s,outline .15s;cursor:default}
+.sb-base{display:inline-block;font-size:13px;font-weight:700;padding:1px 2px;border-radius:2px;letter-spacing:1px;transition:background .15s,outline .15s;cursor:pointer}
+.sb-aa{display:inline-block;font-size:11px;color:#a3a3a3;padding:1px 0.5px;border-radius:2px;transition:background .15s,outline .15s;cursor:pointer}
+.sb-base:hover,.sb-aa:hover{background:rgba(34,211,238,.18)}
+.sb-aa.focused{outline:2px solid #22d3ee!important;outline-offset:1px;background:rgba(34,211,238,.28)!important;color:#fff!important}
 .sb-tick{display:inline-block;color:var(--muted);font-size:8px;vertical-align:super;margin:0 2px 0 4px;user-select:none;pointer-events:none}
 .hl-hbond{background:rgba(234,179,8,.35)!important;outline:1px solid #eab308!important;color:#fff!important}
 .hl-pistack{background:rgba(74,222,128,.35)!important;outline:1px solid #4ade80!important;color:#fff!important}
 .hl-saltbridge{background:rgba(245,158,11,.35)!important;outline:1px solid #f59e0b!important;color:#fff!important}
+
+/* ════════════════════════ v2 enhancements ════════════════════════ */
+header{background:var(--bg2)!important;border-bottom:1px solid var(--border)}
+header h1{font-size:15px;background:linear-gradient(90deg,#a5b4fc,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{font-size:11px}
+.tab-group{display:flex;gap:2px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:2px;margin-left:auto}
+.tab-group .tab-btn{border:none!important;background:transparent!important;border-radius:5px;padding:5px 12px;color:var(--muted)!important;font-size:11.5px}
+.tab-group .tab-btn.active{background:var(--bg4)!important;color:var(--text)!important;box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.mode-toggle{display:flex;gap:2px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:2px;margin-left:8px}
+.mode-toggle button{border:none;background:transparent;color:var(--muted);padding:5px 12px;border-radius:5px;font-size:11.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:.15s}
+.mode-toggle button.on{background:var(--bg4);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.mode-toggle button svg{width:13px;height:13px}
+.share-btn{margin-left:8px;padding:5px 11px;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);font-size:11.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:.15s}
+.share-btn:hover{background:rgba(255,255,255,.1);color:var(--text);border-color:#4b5563}
+.share-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid #4ade80;color:#4ade80;padding:9px 18px;border-radius:6px;font-size:12px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.share-toast.show{opacity:1}
+/* ctrl-bar grouping */
+.ctrl-group{display:flex;align-items:center;gap:6px;padding:0 4px;position:relative}
+.ctrl-group + .ctrl-group{margin-left:4px;border-left:1px solid var(--border);padding-left:10px}
+.ctrl-group .clabel{font-size:9.5px;text-transform:uppercase;letter-spacing:.9px;color:#6b7280;margin-right:2px;font-weight:600}
+.toggle-btn{font-size:11.5px;padding:5px 11px}
+/* clickable SNP logo columns */
+.logo-col{cursor:pointer;transition:filter .12s}
+.logo-col:hover{filter:brightness(1.1)}
+.logo-col rect.col-bg{fill:transparent;transition:fill .12s,stroke .12s;stroke:transparent;stroke-width:1}
+.logo-col:hover rect.col-bg{fill:rgba(34,211,238,.12)}
+.logo-col.focused rect.col-bg{fill:rgba(34,211,238,.22);stroke:#22d3ee}
+.logo-col.focused text{font-weight:700;fill:#0e7490}
+.sb-base.focused{outline:2px solid #22d3ee!important;outline-offset:1px;background:rgba(34,211,238,.28)!important;color:#fff!important}
+/* score breakdown popover */
+.score-badge{position:relative;cursor:help;transition:transform .15s}
+.score-badge:hover{transform:scale(1.02)}
+.score-pop{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px 12px;z-index:50;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.6);font-weight:normal}
+.score-badge:hover .score-pop{display:block}
+.score-pop .sp-title{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:7px;font-weight:700}
+.score-pop .sp-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);margin-bottom:3px;font-weight:500;gap:8px}
+.score-pop .sp-row b{color:var(--text);font-variant-numeric:tabular-nums;font-weight:700;font-size:11px}
+.score-pop .sp-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.score-pop .sp-bar > div{height:100%;border-radius:2px;transition:width .3s}
+.score-pop .sp-formula{font-size:10px;color:#6b7280;font-style:normal;padding-top:8px;border-top:1px solid var(--border);margin-top:6px;line-height:1.5}
+/* compare mode layout */
+#pane-b{display:none;flex:1;flex-direction:column;min-width:0;background:#060a14;border-left:1px solid var(--border)}
+body.compare-on #pane-b{display:flex}
+body.compare-on .metrics-panel{display:none!important}
+body.compare-on .vp-area{flex:1}
+body.compare-on #pane-a-hd{display:flex!important}
+body.compare-on #seq-bar{display:none!important}
+body.compare-on #pane-a-metrics{display:flex!important}
+.pane-hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;min-height:38px}
+.pane-tag{font-size:9.5px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;padding:2px 8px;border-radius:3px;flex-shrink:0}
+.pane-tag.a{color:#a5b4fc;background:rgba(165,180,252,.14);border:1px solid rgba(165,180,252,.3)}
+.pane-tag.b{color:#fbcfe8;background:rgba(251,207,232,.14);border:1px solid rgba(251,207,232,.3)}
+.pane-hd select{background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:4px 26px 4px 9px;font-size:12px;font-weight:600;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 4 L5 7 L8 4' stroke='%238b949e' stroke-width='1.2' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 8px center;flex:1;min-width:0}
+.pane-hd .pane-score{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0;padding:2px 8px;border-radius:10px}
+.pane-hd .pane-score.up{color:var(--t1-col);background:rgba(74,222,128,.12)}
+.pane-hd .pane-score.dn{color:var(--t2-col);background:rgba(251,191,36,.12)}
+.pane-hd .pane-score.ref{color:var(--ref-col);background:rgba(96,165,250,.12)}
+.pane-metrics{background:var(--bg2);border-top:1px solid var(--border);padding:8px 12px;display:flex;gap:18px;font-size:11px;flex-shrink:0;align-items:center;overflow-x:auto}
+.pane-metrics .pm{display:flex;flex-direction:column;gap:1px;flex-shrink:0}
+.pane-metrics .pm-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+.pane-metrics .pm-val{font-size:13px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.1}
+.pane-metrics .pm-delta{font-size:10px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.pane-metrics .pm-delta.up{color:var(--t1-col)}
+.pane-metrics .pm-delta.dn{color:var(--red)}
+.pane-metrics .pm-delta.flat{color:var(--muted)}
+.pane-metrics .pm-logo{flex:1;min-width:180px;background:#fff;border-radius:4px;height:54px;align-self:stretch;margin-left:auto;overflow:hidden;position:relative}
+.pane-metrics .pm-logo-label{position:absolute;top:3px;left:6px;font-size:8px;color:#6b7280;text-transform:uppercase;letter-spacing:.7px;font-weight:700;pointer-events:none;z-index:1}
+.pane-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:#060a14}
+.sample-btn .stier{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#6b7280;margin-top:2px}
+.sidebar h3.tierhd{padding:14px 12px 4px;font-size:9px;color:#6b7280;border-top:1px solid var(--border);margin-top:4px}
+.sidebar h3.tierhd:first-of-type{border-top:none;margin-top:0}
+.sb-section{margin-top:2px}
+/* sidebar candidate buttons in compare mode get small A/B indicators */
+.sample-btn .pin-row{display:flex;gap:4px;margin-top:4px}
+body.compare-on .sample-btn .pin-row{display:flex}
+.sample-btn .pin-row{display:none}
+.pin-btn{font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;letter-spacing:.5px}
+.pin-btn:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.pin-btn.active-a{background:rgba(165,180,252,.2);color:#a5b4fc;border-color:rgba(165,180,252,.4)}
+.pin-btn.active-b{background:rgba(251,207,232,.2);color:#fbcfe8;border-color:rgba(251,207,232,.4)}
+/* metrics: score badge tightened */
+.score-badge{font-weight:700;letter-spacing:.2px}
+/* hide single-view-only controls in compare mode for clarity */
+body.compare-on #btn-ref{opacity:.4;pointer-events:none}
+@media (max-width:1400px){
+  .pane-metrics .pm-logo{display:none}
+}
 </style>
 </head>
-<body>
+<body style="background-color: rgb(60, 71, 88)">
 
 <header>
   <div>
@@ -218,10 +308,24 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
     <p>EWS-fusion constructs for Ewing's sarcoma &nbsp;·&nbsp; ETS variants (12 bp) &amp; ZF variants (18 bp)</p>
     <p style="font-size:10px;color:#6e7faa;margin-top:3px">Lei Huang, Ph.D &nbsp;·&nbsp; Massachusetts General Hospital &nbsp;·&nbsp; Pinello Lab</p>
   </div>
-  <div class="tab-bar">
+  <div class="tab-group">
     <button class="tab-btn active" onclick="switchPanel('ets')">ETS Variants (12 bp)</button>
     <button class="tab-btn" onclick="switchPanel('zf')">ZF Variants (18 bp)</button>
   </div>
+  <div class="mode-toggle">
+    <button id="mode-single" class="on" onclick="setMode('single')" title="Single candidate view">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="3" width="11" height="10" rx="1.5"/></svg>
+      Single
+    </button>
+    <button id="mode-compare" onclick="setMode('compare')" title="Compare two candidates side by side">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1.5" y="3" width="6" height="10" rx="1.2"/><rect x="8.5" y="3" width="6" height="10" rx="1.2"/></svg>
+      Compare
+    </button>
+  </div>
+  <button class="share-btn" onclick="copyShareLink()" title="Copy a shareable link to this view">
+    <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 4 L13 8 L9 12 M13 8 H3"/></svg>
+    Share view
+  </button>
 </header>
 
 <div class="main">
@@ -232,6 +336,11 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
 
   <!-- Center: 3D viewport + controls -->
   <div class="vp-area">
+    <div class="pane-hd" id="pane-a-hd" style="display:none">
+      <span class="pane-tag a">A</span>
+      <select id="pane-a-select" onchange="loadSample(this.value)"></select>
+      <span class="pane-score ref" id="pane-a-score">—</span>
+    </div>
     <div id="seq-bar"><div class="seq-card"><div class="seq-card-hd">Sequences</div><div class="seq-row"><span class="seq-label">DNA</span><span class="seq-bases" id="dna-seq-display"></span></div><div class="seq-row"><span class="seq-label">Protein</span><span class="seq-aa" id="prot-seq-display"></span></div></div></div>
     <div id="viewport">
       <div id="loading">
@@ -239,37 +348,47 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
         <p id="loading-msg">Select a candidate to view</p>
       </div>
     </div>
+    <div class="pane-metrics" id="pane-a-metrics" style="display:none"></div>
     <div class="ctrl-bar">
-      <span class="clabel">Display</span>
-      <div class="toggle-btn on" id="btn-cartoon" onclick="toggleRep('cartoon')">
-        <div class="dot"></div>Protein
+      <div class="ctrl-group">
+        <span class="clabel">Structure</span>
+        <div class="toggle-btn on" id="btn-cartoon" onclick="toggleRep('cartoon')">
+          <div class="dot"></div>Protein
+        </div>
+        <div class="toggle-btn on" id="btn-dna" onclick="toggleRep('dna')">
+          <div class="dot"></div>DNA
+        </div>
+        <div class="toggle-btn sc" id="btn-sc" onclick="toggleRep('sc')">
+          <div class="dot"></div>Side chains
+        </div>
+        <div class="toggle-btn zinc" id="btn-zinc" onclick="toggleRep('zinc')" style="display:none">
+          <div class="dot"></div>Zn²⁺
+        </div>
       </div>
-      <div class="toggle-btn on" id="btn-dna" onclick="toggleRep('dna')">
-        <div class="dot"></div>DNA
+      <div class="ctrl-group">
+        <span class="clabel">Contacts</span>
+        <div class="toggle-btn on hbond" id="btn-hbond" onclick="toggleRep('hbond')">
+          <div class="dot"></div>H-bonds
+        </div>
+        <div class="toggle-btn pistack" id="btn-pistack" onclick="toggleRep('pistack')">
+          <div class="dot"></div>π-π
+        </div>
+        <div class="toggle-btn saltbridge" id="btn-saltbridge" onclick="toggleRep('saltbridge')">
+          <div class="dot"></div>Salt bridges
+        </div>
       </div>
-      <div class="toggle-btn on hbond" id="btn-hbond" onclick="toggleRep('hbond')">
-        <div class="dot"></div>H-bonds
+      <div class="ctrl-group">
+        <span class="clabel">Overlay</span>
+        <div class="toggle-btn" id="btn-ref" onclick="toggleRef()">
+          <div class="dot"></div>Reference
+        </div>
       </div>
-      <div class="toggle-btn pistack" id="btn-pistack" onclick="toggleRep('pistack')">
-        <div class="dot"></div>π-π stacking
+      <div class="ctrl-group" style="margin-left:auto">
+        <span class="clabel">View</span>
+        <div class="icon-btn" onclick="spinToggle()" id="spinBtn" title="Toggle spin">⟳ Spin</div>
+        <div class="icon-btn" onclick="resetView()" title="Reset view">⊙ Center</div>
+        <div class="icon-btn" onclick="takeScreenshot()" title="Screenshot">📷 Save</div>
       </div>
-      <div class="toggle-btn saltbridge" id="btn-saltbridge" onclick="toggleRep('saltbridge')">
-        <div class="dot"></div>Salt bridges
-      </div>
-      <div class="toggle-btn sc" id="btn-sc" onclick="toggleRep('sc')">
-        <div class="dot"></div>Side chains
-      </div>
-      <div class="toggle-btn zinc" id="btn-zinc" onclick="toggleRep('zinc')" style="display:none">
-        <div class="dot"></div>Zn²⁺
-      </div>
-      <div class="sep"></div>
-      <div class="toggle-btn" id="btn-ref" onclick="toggleRef()">
-        <div class="dot"></div>+ Reference
-      </div>
-      <div class="sep"></div>
-      <div class="icon-btn" onclick="spinToggle()" id="spinBtn" title="Toggle spin">⟳ Spin</div>
-      <div class="icon-btn" onclick="resetView()" title="Reset view">⊙ Center</div>
-      <div class="icon-btn" onclick="takeScreenshot()" title="Screenshot">📷 Save</div>
     </div>
   </div>
 
@@ -277,6 +396,17 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
   <div class="metrics-panel" id="metrics-panel">
     <h3>Metrics</h3>
     <div style="color:var(--muted);font-size:12px;margin-top:20px;text-align:center">Select a candidate</div>
+  </div>
+
+  <!-- Compare-mode: secondary viewport -->
+  <div id="pane-b">
+    <div class="pane-hd">
+      <span class="pane-tag b">B</span>
+      <select id="pane-b-select" onchange="loadSecondary(this.value)"></select>
+      <span class="pane-score ref" id="pane-b-score">—</span>
+    </div>
+    <div id="viewport-b" style="flex:1;background:#060a14;min-height:0;position:relative"></div>
+    <div class="pane-metrics" id="pane-b-metrics"></div>
   </div>
 </div>
 
@@ -626,6 +756,7 @@ function loadSample(id) {
     });
     renderSeqHighlights();
     if (showRef && entry.tier !== 'ref') loadReference();
+    if (window._postLoadA) window._postLoadA(entry);
   });
 }
 
@@ -988,6 +1119,21 @@ function drawLogo(container, ppm) {
   svg.appendChild(guide);
 
   for (let i = 0; i < L; i++) {
+    // Wrap this column in a clickable group
+    const colG = document.createElementNS(svgNS, 'g');
+    colG.setAttribute('class', 'logo-col');
+    colG.setAttribute('data-pos', i + 1);
+
+    // Background rect for hover/focus state
+    const bg = document.createElementNS(svgNS, 'rect');
+    bg.setAttribute('class', 'col-bg');
+    bg.setAttribute('x', i * cellW);
+    bg.setAttribute('y', 0);
+    bg.setAttribute('width', cellW);
+    bg.setAttribute('height', cssH);
+    bg.setAttribute('rx', 2);
+    colG.appendChild(bg);
+
     // Shannon entropy → information content
     let entropy = 0;
     for (let b = 0; b < 4; b++) {
@@ -1016,7 +1162,7 @@ function drawLogo(container, ppm) {
       path.setAttribute('fill', LOGO_COLORS[base]);
       path.setAttribute('fill-rule', 'evenodd');
       g.appendChild(path);
-      svg.appendChild(g);
+      colG.appendChild(g);
       yBottom -= pixH;
     }
 
@@ -1029,7 +1175,14 @@ function drawLogo(container, ppm) {
     label.setAttribute('text-anchor', 'middle');
     label.setAttribute('fill', '#374151');
     label.textContent = i + 1;
-    svg.appendChild(label);
+    colG.appendChild(label);
+
+    // Click handler — focus this base in 3D + sequence bar
+    colG.addEventListener('click', () => {
+      if (window.focusBase) window.focusBase(i);
+    });
+
+    svg.appendChild(colG);
   }
 
   container.innerHTML = '';
@@ -1176,6 +1329,803 @@ function buildRadar(entry, ref) {
     }
   });
 }
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  v2 enhancements — compare mode, clickable SNP logo, URL state
+// ════════════════════════════════════════════════════════════════
+let compareMode = false;
+let stageB = null;
+let mainCompB = null;
+let currentIdB = null;
+let repMapB = {};
+let dnaIdxResnos = [];      // for primary: idx in dna_seq → resno
+let dnaIdxResnosB = [];     // for secondary
+let protIdxResnos = [];     // primary: idx in prot_seq → resno
+let protIdxResnosB = [];    // secondary
+// Selection state: null OR [lo, hi] inclusive index range (lo === hi for single)
+let focusedBaseRange = null;
+let focusedAaRange = null;
+const focusRefA = {rep: null};
+const focusRefB = {rep: null};
+// Inverse maps for 3D-click → seq-idx
+function inverseArr(arr) { const m = new Map(); arr.forEach((v,i) => m.set(v, i)); return m; }
+let _suppressSync = false;
+let _hydrating = false;
+
+// ── small helpers ──────────────────────────────────────────────
+function entryById(panel, id) {
+  return PANELS[panel].find(s => s.id === id);
+}
+function refEntry() {
+  return PANELS[currentPanel][0];
+}
+function fmtMetric(k, v) {
+  if (k === 'ddG') return v.toFixed(1);
+  if (k === 'iptm') return v.toFixed(2);
+  if (k === 'plddt') return v.toFixed(1);
+  if (k === 'score') return v.toFixed(3);
+  return String(v);
+}
+// Compute first-strand DNA resnos (for click→3D zoom)
+function computeDnaIdxResnos(structure) {
+  const arr = [];
+  let firstChain = null;
+  structure.eachResidue(r => {
+    if (r.isNucleic()) {
+      const c = r.chainname;
+      if (firstChain === null) firstChain = c;
+      if (c === firstChain) arr.push(r.resno);
+    }
+  });
+  return arr;
+}
+// Compute protein resnos in seq order (assume single protein chain matching prot_seq length)
+function computeProtIdxResnos(structure) {
+  const arr = [];
+  let firstChain = null;
+  structure.eachResidue(r => {
+    if (r.isProtein()) {
+      const c = r.chainname;
+      if (firstChain === null) firstChain = c;
+      if (c === firstChain) arr.push(r.resno);
+    }
+  });
+  return arr;
+}
+// Build/refresh the "focus" highlight rep on a stage — uses licorice (sticks) not spacefill.
+// For protein residues, side-chain atoms are highlighted; for DNA, full residue.
+function rebuildFocusRep(comp, ref, dnaResnos, protResnos) {
+  if (!comp) return;
+  if (ref.rep) { try { comp.removeRepresentation(ref.rep); } catch(e){} ref.rep = null; }
+  if (ref.rep2) { try { comp.removeRepresentation(ref.rep2); } catch(e){} ref.rep2 = null; }
+  const parts = [];
+  if (focusedBaseRange && dnaResnos.length) {
+    const lo = dnaResnos[focusedBaseRange[0]];
+    const hi = dnaResnos[focusedBaseRange[1]];
+    if (lo !== undefined && hi !== undefined) {
+      parts.push({sele: `(${lo}-${hi}) and nucleic`, kind: 'dna'});
+    }
+  }
+  if (focusedAaRange && protResnos.length) {
+    const lo = protResnos[focusedAaRange[0]];
+    const hi = protResnos[focusedAaRange[1]];
+    if (lo !== undefined && hi !== undefined) {
+      parts.push({sele: `(${lo}-${hi}) and protein and sidechainAttached`, kind: 'aa'});
+    }
+  }
+  if (parts.length === 0) return;
+  try {
+    // Combine into one licorice rep with the union selection
+    const sele = parts.length > 1 ? '(' + parts.map(p => p.sele).join(' or ') + ')' : parts[0].sele;
+    ref.rep = comp.addRepresentation('licorice', {
+      sele,
+      color: '#22d3ee',
+      radius: 0.35,
+      opacity: 1.0,
+      visible: true
+    });
+    // For protein side chains, draw a CA ball to anchor the highlight (otherwise Gly disappears)
+    if (focusedAaRange && protResnos.length) {
+      const lo = protResnos[focusedAaRange[0]];
+      const hi = protResnos[focusedAaRange[1]];
+      if (lo !== undefined && hi !== undefined) {
+        ref.rep2 = comp.addRepresentation('ball+stick', {
+          sele: `(${lo}-${hi}) and protein and .CA`,
+          color: '#22d3ee',
+          radius: 0.45,
+          visible: true
+        });
+      }
+    }
+  } catch(e) { console.warn('focus rep failed:', e); }
+}
+function applyFocusAll() {
+  rebuildFocusRep(mainComp, focusRefA, dnaIdxResnos, protIdxResnos);
+  if (compareMode) rebuildFocusRep(mainCompB, focusRefB, dnaIdxResnosB, protIdxResnosB);
+}
+
+// ── populate <select> dropdowns for pane headers ──────────────
+function populatePaneSelect(selectId, panel, selectedId) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  sel.innerHTML = '';
+  PANELS[panel].forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.label + (s.tier === 'ref' ? '  (reference)' : '  · ' + s.subtag.replace(' ✓',''));
+    if (s.id === selectedId) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// ── score pill html ────────────────────────────────────────────
+function scoreChipClass(entry) {
+  if (entry.tier === 'ref') return 'ref';
+  return entry.score >= 1.0 ? 'up' : 'dn';
+}
+function scoreChipText(entry) {
+  if (entry.tier === 'ref') return 'Ref';
+  const pct = ((entry.score - 1) * 100).toFixed(1);
+  return (entry.score >= 1.0 ? '▲ +' : '▼ ') + Math.abs(pct) + '%';
+}
+
+// ── pane-metrics strip HTML ───────────────────────────────────
+function metricStripHtml(entry) {
+  const ref = refEntry();
+  const m = entry.m, refM = ref.m;
+  const rows = [
+    {k:'ddG',   label:'ddG',       v:m.ddG,   r:refM.ddG,   fmt:v=>v.toFixed(1), dir:-1, unit:''},
+    {k:'iptm',  label:'iPTM',      v:m.iptm,  r:refM.iptm,  fmt:v=>v.toFixed(2), dir:1},
+    {k:'plddt', label:'pLDDT',     v:entry.plddt, r:ref.plddt, fmt:v=>v.toFixed(1), dir:1},
+    {k:'base',  label:'base',      v:m.base,  r:refM.base,  fmt:v=>String(v), dir:1},
+    {k:'bi',    label:'bidentate', v:m.bi,    r:refM.bi,    fmt:v=>String(v), dir:1},
+    {k:'major', label:'major HB',  v:m.major, r:refM.major, fmt:v=>String(v), dir:1},
+  ];
+  let html = '';
+  rows.forEach(it => {
+    let delta = '';
+    if (entry.tier !== 'ref') {
+      const diff = it.v - it.r;
+      const better = it.dir > 0 ? diff > 0 : diff < 0;
+      const tol = Math.max(0.001, Math.abs(it.r) * 0.01);
+      const cls = Math.abs(diff) < tol ? 'flat' : (better ? 'up' : 'dn');
+      const sign = diff > 0 ? '+' : '';
+      const dfmt = (it.k === 'ddG' || it.k === 'iptm' || it.k === 'plddt') ? diff.toFixed(it.k==='iptm'?2:1) : diff;
+      delta = `<span class="pm-delta ${cls}">${sign}${dfmt}</span>`;
+    }
+    html += `<div class="pm"><div class="pm-label">${it.label}</div><div class="pm-val">${it.fmt(it.v)}</div>${delta}</div>`;
+  });
+  html += `<div class="pm-logo" id="pmlogo-${entry.id}"><div class="pm-logo-label">SNP scan · ${entry.label}</div></div>`;
+  return html;
+}
+
+function renderPaneStrip(stripId, entry) {
+  const strip = document.getElementById(stripId);
+  if (!strip) return;
+  strip.innerHTML = metricStripHtml(entry);
+  // mini logo
+  const logoData = SNP_LOGO_DATA[entry.id];
+  const c = strip.querySelector('.pm-logo');
+  if (c && logoData) {
+    requestAnimationFrame(() => drawLogo(c, logoData.ppm));
+  }
+}
+
+function renderPaneHd(hdScoreId, entry) {
+  const sc = document.getElementById(hdScoreId);
+  if (!sc) return;
+  sc.className = 'pane-score ' + scoreChipClass(entry);
+  sc.textContent = scoreChipText(entry);
+}
+
+// ── _postLoadA: called after primary loadSample completes ─────
+window._postLoadA = function(entry) {
+  // Build first-strand DNA/protein resno maps for click → 3D focus
+  if (mainComp) {
+    dnaIdxResnos = computeDnaIdxResnos(mainComp.structure);
+    protIdxResnos = computeProtIdxResnos(mainComp.structure);
+  }
+  // Clear any stale focus rep for A (structure was rebuilt)
+  focusRefA.rep = null;
+
+  // Update pane-A header (compare mode only — but populate always)
+  populatePaneSelect('pane-a-select', currentPanel, entry.id);
+  renderPaneHd('pane-a-score', entry);
+  if (compareMode) renderPaneStrip('pane-a-metrics', entry);
+
+  // Apply focused range (e.g. from URL hydration) AFTER load completes
+  if (focusedBaseRange || focusedAaRange) {
+    setTimeout(() => {
+      applyFocusAll();
+      // Auto-zoom to selection
+      if (focusedBaseRange && dnaIdxResnos.length) {
+        const lo = dnaIdxResnos[focusedBaseRange[0]];
+        const hi = dnaIdxResnos[focusedBaseRange[1]];
+        if (lo !== undefined && hi !== undefined && mainComp) {
+          try { mainComp.autoView(`(${lo}-${hi}) and nucleic`, 700); } catch(e){}
+        }
+      } else if (focusedAaRange && protIdxResnos.length) {
+        const lo = protIdxResnos[focusedAaRange[0]];
+        const hi = protIdxResnos[focusedAaRange[1]];
+        if (lo !== undefined && hi !== undefined && mainComp) {
+          try { mainComp.autoView(`(${lo}-${hi}) and protein`, 700); } catch(e){}
+        }
+      }
+      // Re-paint seq-bar focused classes (seq bar was rebuilt)
+      paintFocusInSeq();
+    }, 100);
+  }
+
+  if (!_hydrating) syncURL();
+};
+
+// ── mini metric chip on the score badge (in the right panel) ─
+// We enhance the score-badge with a hover popover showing breakdown.
+function injectScoreBreakdown() {
+  document.querySelectorAll('.score-badge').forEach(el => {
+    if (el.querySelector('.score-pop')) return;
+    if (!currentId) return;
+    const entry = entryById(currentPanel, currentId);
+    if (!entry || entry.tier === 'ref') return;
+    const ref = refEntry();
+    // Component contributions (approximation: ratio of each axis)
+    const m = entry.m;
+    const components = [
+      {label:'ddG',       v: m.ddG / ref.m.ddG},
+      {label:'base',      v: m.base / ref.m.base},
+      {label:'bidentate', v: m.bi / ref.m.bi || 1},
+      {label:'major HB',  v: m.major / ref.m.major},
+      {label:'iPTM',      v: m.iptm / ref.m.iptm},
+    ];
+    let html = `<div class="score-pop"><div class="sp-title">Composite score breakdown</div>`;
+    components.forEach(c => {
+      const pct = Math.min(150, Math.max(0, c.v * 100));
+      const color = c.v >= 1.0 ? '#4ade80' : (c.v < 0.8 ? '#f87171' : '#fbbf24');
+      html += `<div class="sp-row"><span>${c.label}</span><b>${c.v.toFixed(2)}× ref</b></div>`;
+      html += `<div class="sp-bar"><div style="width:${pct*0.67}%;background:${color}"></div></div>`;
+    });
+    html += `<div class="sp-formula">Composite = geometric mean across 5 axes vs reference. Bars at 100% = matches ref; right of 100% = better than ref. ddG: ratio compares magnitudes (both negative).</div>`;
+    html += `</div>`;
+    el.insertAdjacentHTML('beforeend', html);
+  });
+}
+// hook into buildMetrics via MutationObserver on metrics-panel
+const _mo = new MutationObserver(() => injectScoreBreakdown());
+window.addEventListener('load', () => {
+  const mp = document.getElementById('metrics-panel');
+  if (mp) _mo.observe(mp, {childList: true, subtree: true});
+});
+
+// ════════════════════════════════════════════════════════════════
+// Compare mode
+// ════════════════════════════════════════════════════════════════
+function setMode(name) {
+  if (name === 'compare' && !compareMode) enableCompare();
+  else if (name === 'single' && compareMode) disableCompare();
+}
+function enableCompare() {
+  compareMode = true;
+  document.body.classList.add('compare-on');
+  document.getElementById('mode-single').classList.remove('on');
+  document.getElementById('mode-compare').classList.add('on');
+
+  // Init stageB lazily
+  if (!stageB) {
+    stageB = new NGL.Stage('viewport-b', {
+      backgroundColor: '#060a14', quality: 'high', sampleLevel: 2, impostor: true
+    });
+    stageB.setParameters({clipNear: 0, clipFar: 100});
+    setupSyncRotation();
+  }
+  // Render strip for primary if loaded
+  if (currentId) {
+    const entry = entryById(currentPanel, currentId);
+    renderPaneStrip('pane-a-metrics', entry);
+    populatePaneSelect('pane-a-select', currentPanel, entry.id);
+    renderPaneHd('pane-a-score', entry);
+  }
+  // Load secondary: pick next ranked candidate by default (or 2nd-best if A is ref)
+  populatePaneSelect('pane-b-select', currentPanel, currentIdB);
+  if (!currentIdB) {
+    const candidates = PANELS[currentPanel].filter(s => s.tier !== 'ref' && s.id !== currentId);
+    const defaultB = candidates[0]?.id;
+    if (defaultB) loadSecondary(defaultB);
+  } else {
+    loadSecondary(currentIdB);
+  }
+  window.dispatchEvent(new Event('resize'));
+  if (!_hydrating) syncURL();
+}
+function disableCompare() {
+  compareMode = false;
+  document.body.classList.remove('compare-on');
+  document.getElementById('mode-single').classList.add('on');
+  document.getElementById('mode-compare').classList.remove('on');
+  if (stageB && mainCompB) { stageB.removeComponent(mainCompB); mainCompB = null; repMapB = {}; }
+  window.dispatchEvent(new Event('resize'));
+  if (!_hydrating) syncURL();
+}
+
+function loadSecondary(id) {
+  if (!compareMode) return;
+  const entry = entryById(currentPanel, id);
+  if (!entry || !entry.data) return;
+  currentIdB = id;
+  populatePaneSelect('pane-b-select', currentPanel, id);
+  renderPaneHd('pane-b-score', entry);
+  if (mainCompB) { stageB.removeComponent(mainCompB); mainCompB = null; repMapB = {}; }
+  // Decode + load into stage B (NOT through loadStructureData which uses primary stage)
+  const compressed = Uint8Array.from(atob(entry.data), c => c.charCodeAt(0));
+  const text = new TextDecoder().decode(pako.inflate(compressed));
+  const blob = new Blob([text], {type: 'text/plain'});
+  stageB.loadFile(blob, {ext: entry.fmt, name: entry.label + ' (B)'}).then(comp => {
+    mainCompB = comp;
+    addRepsB(comp, entry);
+    comp.autoView(800);
+    // Sometimes the first autoView fits to an empty viewer; re-fit after layout settles
+    setTimeout(() => { stageB.handleResize(); comp.autoView(0); }, 100);
+    dnaIdxResnosB = computeDnaIdxResnos(comp.structure);
+    protIdxResnosB = computeProtIdxResnos(comp.structure);
+    focusRefB.rep = null;
+    renderPaneStrip('pane-b-metrics', entry);
+    attachStageBClick();
+    // Apply current focus to B too
+    if (focusedBaseRange || focusedAaRange) {
+      setTimeout(() => {
+        rebuildFocusRep(comp, focusRefB, dnaIdxResnosB, protIdxResnosB);
+      }, 120);
+    }
+    if (!_hydrating) syncURL();
+  });
+}
+
+function addRepsB(comp, entry) {
+  repMapB = {};
+  repMapB.cartoon = comp.addRepresentation('cartoon', {
+    sele: 'protein', color: '#f9a8d4', smoothSheet: true,
+    aspectRatio: 3.5, opacity: 0.95, visible: toggleState.cartoon
+  });
+  repMapB.dna = comp.addRepresentation('base', {
+    sele: 'nucleic', color: 'resname', visible: toggleState.dna
+  });
+  comp.addRepresentation('ribbon', {
+    sele: 'nucleic', color: '#88557a', scale: 0.4, smoothSheet: false,
+    visible: toggleState.dna
+  });
+  repMapB.hbond = comp.addRepresentation('contact', {
+    sele: 'protein or nucleic',
+    hydrogenBond: true, weakHydrogenBond: false, hydrophobic: false,
+    halogenBond: false, metalCoordination: false, cationPi: false,
+    piStacking: false, ionicInteraction: false,
+    color: '#60a5fa', opacity: 0.9, linewidth: 2.5, visible: toggleState.hbond
+  });
+  repMapB.sc = comp.addRepresentation('licorice', {
+    sele: 'protein and sidechain and not backbone',
+    color: '#5eead4', radius: 0.15, visible: toggleState.sc
+  });
+  if (currentPanel === 'zf') {
+    repMapB.zinc = comp.addRepresentation('ball+stick', {
+      sele: 'ZN', color: '#FF8C00', radius: 0.9, visible: toggleState.zinc
+    });
+  }
+}
+
+// ── synced rotation between stage and stageB ─────────────────
+let _syncLeader = null;
+let _syncTimeout = null;
+function setupSyncRotation() {
+  const a = document.getElementById('viewport');
+  const b = document.getElementById('viewport-b');
+  const setLeader = which => {
+    _syncLeader = which;
+    clearTimeout(_syncTimeout);
+    _syncTimeout = setTimeout(() => { _syncLeader = null; }, 300);
+  };
+  ['mousedown','wheel','touchstart','pointerdown'].forEach(ev => {
+    a.addEventListener(ev, () => setLeader('a'), {passive:true});
+    b.addEventListener(ev, () => setLeader('b'), {passive:true});
+  });
+  function tick() {
+    if (compareMode && stage && stageB) {
+      if (_syncLeader === 'a') copyView(stage, stageB);
+      else if (_syncLeader === 'b') copyView(stageB, stage);
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function copyView(src, dst) {
+  const sv = src?.viewer, dv = dst?.viewer;
+  if (!sv || !dv || !sv.rotationGroup || !dv.rotationGroup) return;
+  if (!dv.rotationGroup.quaternion.equals(sv.rotationGroup.quaternion)) {
+    dv.rotationGroup.quaternion.copy(sv.rotationGroup.quaternion);
+    dv.rotationGroup.updateMatrixWorld();
+  }
+  if (sv.camera && dv.camera && Math.abs(sv.camera.position.z - dv.camera.position.z) > 0.5) {
+    dv.camera.position.z = sv.camera.position.z;
+    dv.camera.updateProjectionMatrix();
+  }
+  dv.requestRender();
+}
+
+// ── mirror toggleRep onto stage B ─────────────────────────────
+const _origToggleRep = window.toggleRep;
+window.toggleRep = function(name) {
+  _origToggleRep(name);
+  // Mirror on B
+  if (compareMode && mainCompB) {
+    if (LAZY_REPS[name] && !repMapB[name]) {
+      const cfg = LAZY_REPS[name];
+      const params = {
+        sele: 'protein or nucleic',
+        hydrogenBond: false, weakHydrogenBond: false, hydrophobic: false,
+        halogenBond: false, metalCoordination: false, cationPi: false,
+        piStacking: false, ionicInteraction: false,
+        color: cfg.color, opacity: 0.9, linewidth: 2.5, visible: true
+      };
+      params[cfg.flag] = true;
+      repMapB[name] = mainCompB.addRepresentation('contact', params);
+    } else if (repMapB[name]) {
+      repMapB[name].setVisibility(toggleState[name]);
+    }
+    if (name === 'dna') {
+      mainCompB.reprList.forEach(r => {
+        if (r.name === 'ribbon') r.setVisibility(toggleState.dna);
+      });
+    }
+  }
+  if (!_hydrating) syncURL();
+};
+
+// ── switchPanel: clear secondary too ─────────────────────────
+const _origSwitchPanel = window.switchPanel;
+window.switchPanel = function(name) {
+  // Clear pane-B if mode changes
+  if (mainCompB && stageB) { stageB.removeComponent(mainCompB); mainCompB = null; repMapB = {}; }
+  currentIdB = null;
+  _origSwitchPanel(name);
+  if (compareMode) {
+    populatePaneSelect('pane-b-select', name, null);
+    // Auto-load first non-ref into B
+    const cands = PANELS[name].filter(s => s.tier !== 'ref');
+    if (cands[0]) setTimeout(() => loadSecondary(cands[0].id), 200);
+  }
+  if (!_hydrating) syncURL();
+};
+
+// ════════════════════════════════════════════════════════════════
+// SNP logo column click → focus base
+// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// Focus selection — ranges of residues / bases
+// Click a single residue OR drag across the seq bar to select a range
+// ════════════════════════════════════════════════════════════════
+function paintFocusInSeq() {
+  // Clear all .focused classes
+  document.querySelectorAll('.sb-base.focused, .sb-aa.focused, .logo-col.focused').forEach(el => el.classList.remove('focused'));
+  if (focusedBaseRange) {
+    const [lo, hi] = focusedBaseRange;
+    for (let i = lo; i <= hi; i++) {
+      const el = document.querySelector(`.sb-base[data-idx="${i}"]`);
+      if (el) el.classList.add('focused');
+      document.querySelectorAll(`.logo-col[data-pos="${i+1}"]`).forEach(c => c.classList.add('focused'));
+    }
+  }
+  if (focusedAaRange) {
+    const [lo, hi] = focusedAaRange;
+    for (let i = lo; i <= hi; i++) {
+      const el = document.querySelector(`.sb-aa[data-idx="${i}"]`);
+      if (el) el.classList.add('focused');
+    }
+  }
+}
+
+function setBaseFocus(lo, hi, opts = {}) {
+  if (lo === null || lo === undefined) { focusedBaseRange = null; }
+  else {
+    const a = Math.min(lo, hi), b = Math.max(lo, hi);
+    focusedBaseRange = [a, b];
+  }
+  focusedAaRange = null;
+  paintFocusInSeq();
+  applyFocusAll();
+  if (!opts.skipZoom && focusedBaseRange) {
+    const [a, b] = focusedBaseRange;
+    if (mainComp && dnaIdxResnos.length) {
+      const sa = dnaIdxResnos[a], sb = dnaIdxResnos[b];
+      if (sa !== undefined && sb !== undefined) {
+        try { mainComp.autoView(`(${sa}-${sb}) and nucleic`, 700); } catch(e){}
+      }
+    }
+    if (compareMode && mainCompB && dnaIdxResnosB.length) {
+      const sa = dnaIdxResnosB[a], sb = dnaIdxResnosB[b];
+      if (sa !== undefined && sb !== undefined) {
+        try { mainCompB.autoView(`(${sa}-${sb}) and nucleic`, 700); } catch(e){}
+      }
+    }
+  }
+  if (!opts.fromUrl && !_hydrating) syncURL();
+}
+
+function setAaFocus(lo, hi, opts = {}) {
+  if (lo === null || lo === undefined) { focusedAaRange = null; }
+  else {
+    const a = Math.min(lo, hi), b = Math.max(lo, hi);
+    focusedAaRange = [a, b];
+  }
+  focusedBaseRange = null;
+  paintFocusInSeq();
+  applyFocusAll();
+  if (!opts.skipZoom && focusedAaRange) {
+    const [a, b] = focusedAaRange;
+    if (mainComp && protIdxResnos.length) {
+      const sa = protIdxResnos[a], sb = protIdxResnos[b];
+      if (sa !== undefined && sb !== undefined) {
+        try { mainComp.autoView(`(${sa}-${sb}) and protein`, 700); } catch(e){}
+      }
+    }
+    if (compareMode && mainCompB && protIdxResnosB.length) {
+      const sa = protIdxResnosB[a], sb = protIdxResnosB[b];
+      if (sa !== undefined && sb !== undefined) {
+        try { mainCompB.autoView(`(${sa}-${sb}) and protein`, 700); } catch(e){}
+      }
+    }
+  }
+  if (!opts.fromUrl && !_hydrating) syncURL();
+}
+
+function clearAllFocus(opts = {}) {
+  focusedBaseRange = null;
+  focusedAaRange = null;
+  paintFocusInSeq();
+  applyFocusAll();
+  if (!opts.skipZoom) {
+    if (mainComp) mainComp.autoView(600);
+    if (compareMode && mainCompB) mainCompB.autoView(600);
+  }
+  if (!opts.fromUrl && !_hydrating) syncURL();
+}
+
+// Back-compat wrappers (still used by SNP logo click)
+window.focusBase = function(idx, fromUrl) { setBaseFocus(idx, idx, {fromUrl}); };
+window.focusAa = function(idx, fromUrl) { setAaFocus(idx, idx, {fromUrl}); };
+
+// Sequence-bar drag-select: mousedown anchors, mousemove extends, mouseup commits
+let _seqDrag = null;   // {type, anchor, lastIdx, moved}
+window.addEventListener('load', () => {
+  const sb = document.getElementById('seq-bar');
+  if (!sb) return;
+  // Disable native text selection during drag
+  sb.addEventListener('mousedown', e => {
+    const aa = e.target.closest('.sb-aa');
+    const base = e.target.closest('.sb-base');
+    if (aa) {
+      const idx = parseInt(aa.dataset.idx, 10);
+      _seqDrag = {type: 'aa', anchor: idx, lastIdx: idx, moved: false};
+      setAaFocus(idx, idx, {skipZoom: true});
+      e.preventDefault();
+    } else if (base) {
+      const idx = parseInt(base.dataset.idx, 10);
+      _seqDrag = {type: 'base', anchor: idx, lastIdx: idx, moved: false};
+      setBaseFocus(idx, idx, {skipZoom: true});
+      e.preventDefault();
+    } else {
+      // Clicked seq-bar but not on a residue → clear
+      clearAllFocus();
+    }
+  });
+  sb.addEventListener('mousemove', e => {
+    if (!_seqDrag) return;
+    const sel = _seqDrag.type === 'aa' ? '.sb-aa' : '.sb-base';
+    const el = e.target.closest(sel);
+    if (el) {
+      const idx = parseInt(el.dataset.idx, 10);
+      if (idx !== _seqDrag.lastIdx) {
+        _seqDrag.lastIdx = idx;
+        _seqDrag.moved = true;
+        if (_seqDrag.type === 'aa') setAaFocus(_seqDrag.anchor, idx, {skipZoom: true});
+        else setBaseFocus(_seqDrag.anchor, idx, {skipZoom: true});
+      }
+    }
+  });
+  window.addEventListener('mouseup', () => {
+    if (!_seqDrag) return;
+    const d = _seqDrag;
+    _seqDrag = null;
+    // Now zoom to the final selection
+    if (d.type === 'aa' && focusedAaRange) {
+      const [a, b] = focusedAaRange;
+      if (mainComp && protIdxResnos[a] !== undefined && protIdxResnos[b] !== undefined) {
+        try { mainComp.autoView(`(${protIdxResnos[a]}-${protIdxResnos[b]}) and protein`, 700); } catch(e){}
+      }
+      if (compareMode && mainCompB && protIdxResnosB[a] !== undefined && protIdxResnosB[b] !== undefined) {
+        try { mainCompB.autoView(`(${protIdxResnosB[a]}-${protIdxResnosB[b]}) and protein`, 700); } catch(e){}
+      }
+    } else if (d.type === 'base' && focusedBaseRange) {
+      const [a, b] = focusedBaseRange;
+      if (mainComp && dnaIdxResnos[a] !== undefined && dnaIdxResnos[b] !== undefined) {
+        try { mainComp.autoView(`(${dnaIdxResnos[a]}-${dnaIdxResnos[b]}) and nucleic`, 700); } catch(e){}
+      }
+      if (compareMode && mainCompB && dnaIdxResnosB[a] !== undefined && dnaIdxResnosB[b] !== undefined) {
+        try { mainCompB.autoView(`(${dnaIdxResnosB[a]}-${dnaIdxResnosB[b]}) and nucleic`, 700); } catch(e){}
+      }
+    }
+    syncURL();
+  });
+});
+
+// 3D click: click an atom → focus its residue. Click background → clear focus.
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    function attach(s, dnaArr, protArr) {
+      if (!s || !s.signals || !s.signals.clicked) return;
+      s.signals.clicked.add(pp => {
+        if (!pp || !pp.atom) {
+          clearAllFocus();
+          return;
+        }
+        const a = pp.atom;
+        const r = a.resno;
+        const dnaInv = inverseArr(dnaArr);
+        const protInv = inverseArr(protArr);
+        if (dnaInv.has(r)) setBaseFocus(dnaInv.get(r), dnaInv.get(r));
+        else if (protInv.has(r)) setAaFocus(protInv.get(r), protInv.get(r));
+      });
+    }
+    if (stage) attach(stage, dnaIdxResnos, protIdxResnos);
+    // For stage B, attach when it's created — patch enableCompare
+  }, 500);
+});
+
+// Attach 3D click handler to stage B once it's created
+let _stageBClickAttached = false;
+function attachStageBClick() {
+  if (_stageBClickAttached || !stageB) return;
+  _stageBClickAttached = true;
+  stageB.signals.clicked.add(pp => {
+    if (!pp || !pp.atom) { clearAllFocus(); return; }
+    const a = pp.atom;
+    const r = a.resno;
+    const dnaInv = inverseArr(dnaIdxResnosB);
+    const protInv = inverseArr(protIdxResnosB);
+    if (dnaInv.has(r)) setBaseFocus(dnaInv.get(r), dnaInv.get(r));
+    else if (protInv.has(r)) setAaFocus(protInv.get(r), protInv.get(r));
+  });
+}
+
+// Clear focus on Esc
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && (focusedBaseRange || focusedAaRange)) {
+    clearAllFocus();
+  }
+});
+
+// ════════════════════════════════════════════════════════════════
+// URL state — shareable view
+// ════════════════════════════════════════════════════════════════
+function syncURL() {
+  if (_hydrating) return;
+  const params = new URLSearchParams();
+  params.set('p', currentPanel);
+  if (currentId) params.set('a', currentId);
+  if (compareMode && currentIdB) params.set('b', currentIdB);
+  // Reps that differ from defaults
+  const onReps = Object.entries(toggleState).filter(([k,v]) => v).map(([k]) => k).join(',');
+  if (onReps) params.set('r', onReps);
+  if (focusedBaseRange) {
+    const [a, b] = focusedBaseRange;
+    params.set('f', a === b ? String(a + 1) : `${a + 1}-${b + 1}`);
+  }
+  if (focusedAaRange) {
+    const [a, b] = focusedAaRange;
+    params.set('fa', a === b ? String(a + 1) : `${a + 1}-${b + 1}`);
+  }
+  if (showRef) params.set('ref', '1');
+  const hash = '#' + params.toString();
+  if (location.hash !== hash) history.replaceState(null, '', hash);
+}
+
+async function hydrateFromURL() {
+  if (!location.hash || location.hash.length < 2) return;
+  _hydrating = true;
+  try {
+    const params = new URLSearchParams(location.hash.slice(1));
+    const p = params.get('p');
+    if (p && p !== currentPanel && (p === 'ets' || p === 'zf')) {
+      switchPanel(p);
+    }
+    // Set toggle states from r before loading
+    const r = params.get('r');
+    if (r) {
+      const onSet = new Set(r.split(','));
+      ['cartoon','dna','hbond','pistack','saltbridge','sc','zinc'].forEach(k => {
+        const want = onSet.has(k);
+        if (toggleState[k] !== want) {
+          toggleState[k] = want;
+          const btn = document.getElementById('btn-' + k);
+          if (btn) btn.classList.toggle('on', want);
+        }
+      });
+    }
+    const parseRange = v => {
+      if (!v) return null;
+      const m = v.match(/^(\d+)(?:-(\d+))?$/);
+      if (!m) return null;
+      const a = Math.max(0, parseInt(m[1], 10) - 1);
+      const b = m[2] ? Math.max(0, parseInt(m[2], 10) - 1) : a;
+      return [Math.min(a, b), Math.max(a, b)];
+    };
+    focusedBaseRange = parseRange(params.get('f'));
+    focusedAaRange   = parseRange(params.get('fa'));
+    const a = params.get('a');
+    if (a) {
+      await new Promise(res => {
+        const orig = window._postLoadA;
+        window._postLoadA = function(entry) {
+          orig && orig(entry);
+          window._postLoadA = orig;
+          res();
+        };
+        loadSample(a);
+      });
+    }
+    const b = params.get('b');
+    if (b) {
+      enableCompare();
+      // wait a tick for stage B init, then load
+      await new Promise(res => setTimeout(res, 50));
+      loadSecondary(b);
+    }
+    if (params.get('ref') === '1' && !showRef) {
+      toggleRef();
+    }
+  } catch (e) {
+    console.warn('URL hydrate failed', e);
+  } finally {
+    _hydrating = false;
+    syncURL();
+  }
+}
+
+function copyShareLink() {
+  const url = location.href;
+  const showToast = (msg, ok=true) => {
+    let toast = document.querySelector('.share-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'share-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.color = ok ? '#4ade80' : '#f87171';
+    toast.style.borderColor = ok ? '#4ade80' : '#f87171';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(
+      () => showToast('✓ Link copied to clipboard'),
+      () => showToast('Copy failed — URL: ' + url, false)
+    );
+  } else {
+    // Fallback: select-and-copy
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('✓ Link copied'); }
+    catch(e) { showToast('Copy failed', false); }
+    document.body.removeChild(ta);
+  }
+}
+
+// Wait for stage init, then hydrate from URL hash
+window.addEventListener('load', () => {
+  // Give NGL stage a moment to fully init
+  setTimeout(() => hydrateFromURL(), 200);
+});
 </script>
 </body>
 </html>
