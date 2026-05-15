@@ -196,9 +196,12 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
 #loading p{color:var(--muted);font-size:12px}
 /* scrollbar */
 ::-webkit-scrollbar{width:5px};::-webkit-scrollbar-track{background:var(--bg)};::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
-.seq-bar{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--border);padding:8px 14px;font-family:'Courier New',monospace;display:none;flex-direction:column;gap:5px;flex-shrink:0;overflow-x:auto}
-.seq-bar .seq-row{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
-.seq-bar .seq-label{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px;min-width:40px;text-align:right;flex-shrink:0}
+#seq-bar{padding:7px 12px 9px;display:none;flex-shrink:0;font-family:'Courier New',monospace}
+.seq-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--bg2)}
+.seq-card-hd{background:var(--bg4);padding:3px 10px;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border-bottom:1px solid var(--border)}
+.seq-row{display:flex;align-items:center;padding:5px 10px;overflow-x:auto;white-space:nowrap}
+.seq-row+.seq-row{border-top:1px solid var(--border)}
+.seq-label{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px;min-width:44px;text-align:right;flex-shrink:0;padding-right:10px;margin-right:10px;border-right:2px solid var(--border)}
 .sb-base{display:inline-block;font-size:13px;font-weight:700;padding:1px 2px;border-radius:2px;letter-spacing:1px;transition:background .15s,outline .15s;cursor:default}
 .sb-aa{display:inline-block;font-size:11px;color:#a3a3a3;padding:1px 0.5px;border-radius:2px;transition:background .15s,outline .15s;cursor:default}
 .sb-tick{display:inline-block;color:var(--muted);font-size:8px;vertical-align:super;margin:0 2px 0 4px;user-select:none;pointer-events:none}
@@ -229,7 +232,7 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
 
   <!-- Center: 3D viewport + controls -->
   <div class="vp-area">
-    <div id="seq-bar"><div class="seq-row"><span class="seq-label">DNA</span><span class="seq-bases" id="dna-seq-display"></span></div><div class="seq-row"><span class="seq-label">Protein</span><span class="seq-aa" id="prot-seq-display"></span></div></div>
+    <div id="seq-bar"><div class="seq-card"><div class="seq-card-hd">Sequences</div><div class="seq-row"><span class="seq-label">DNA</span><span class="seq-bases" id="dna-seq-display"></span></div><div class="seq-row"><span class="seq-label">Protein</span><span class="seq-aa" id="prot-seq-display"></span></div></div></div>
     <div id="viewport">
       <div id="loading">
         <div class="spin"></div>
@@ -609,7 +612,7 @@ function loadSample(id) {
         }
         protEl.innerHTML = ph;
       }
-      sb.style.display = 'flex';
+      sb.style.display = 'block';
     }
     // Build residue map + compute initial contact highlights
     seqResMap = buildResidueMap(comp.structure);
