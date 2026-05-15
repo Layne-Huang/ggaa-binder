@@ -196,11 +196,15 @@ header p{font-size:11px;color:var(--muted);margin-top:2px}
 #loading p{color:var(--muted);font-size:12px}
 /* scrollbar */
 ::-webkit-scrollbar{width:5px};::-webkit-scrollbar-track{background:var(--bg)};::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
-.seq-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 12px;font-family:'Courier New',monospace;font-size:11px;line-height:1.6;display:none;flex-direction:column;gap:2px;flex-shrink:0}
-.seq-bar .seq-row{display:flex;align-items:baseline;gap:8px}
-.seq-bar .seq-label{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px;min-width:32px;text-align:right}
-.seq-bar .seq-bases span{display:inline-block}
-.seq-bar .seq-aa{color:#a3a3a3;word-break:break-all;letter-spacing:1px}
+.seq-bar{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--border);padding:8px 14px;font-family:'Courier New',monospace;display:none;flex-direction:column;gap:5px;flex-shrink:0;overflow-x:auto}
+.seq-bar .seq-row{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.seq-bar .seq-label{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px;min-width:40px;text-align:right;flex-shrink:0}
+.sb-base{display:inline-block;font-size:13px;font-weight:700;padding:1px 2px;border-radius:2px;letter-spacing:1px;transition:background .15s,outline .15s;cursor:default}
+.sb-aa{display:inline-block;font-size:11px;color:#a3a3a3;padding:1px 0.5px;border-radius:2px;transition:background .15s,outline .15s;cursor:default}
+.sb-tick{display:inline-block;color:var(--muted);font-size:8px;vertical-align:super;margin:0 2px 0 4px;user-select:none;pointer-events:none}
+.hl-hbond{background:rgba(234,179,8,.35)!important;outline:1px solid #eab308!important;color:#fff!important}
+.hl-pistack{background:rgba(74,222,128,.35)!important;outline:1px solid #4ade80!important;color:#fff!important}
+.hl-saltbridge{background:rgba(245,158,11,.35)!important;outline:1px solid #f59e0b!important;color:#fff!important}
 </style>
 </head>
 <body>
@@ -497,6 +501,8 @@ let spinning = false;
 let spinHandle = null;
 let showRef = false;
 let radarChart = null;
+let seqResMap = null;   // {protMap, dnaMap}: resno -> seqIdx
+const seqHighlights = {};  // type -> {prot:Set, dna:Set}
 
 const toggleState = {cartoon:true, dna:true, hbond:true, pistack:false, saltbridge:false, sc:false, zinc:true};
 
@@ -583,19 +589,39 @@ function loadSample(id) {
     hideLoding();
     buildMetrics(entry, PANELS[currentPanel][0]);
     // Populate sequence bar
+    // ── Sequence bar ──────────────────────────────────────────────────────────
     const sb = document.getElementById('seq-bar');
     if (sb) {
-      const dnaEl = document.getElementById('dna-seq-display');
+      const dnaEl  = document.getElementById('dna-seq-display');
       const protEl = document.getElementById('prot-seq-display');
-      const dcols = {'A':'#008000','C':'#0000ff','G':'#FBA922','T':'#ff0000'};
+      const dcols  = {A:'#008000',C:'#0000ff',G:'#FBA922',T:'#ff0000'};
       if (dnaEl && entry.dna_seq) {
-        dnaEl.innerHTML = [...entry.dna_seq].map(b => `<span style="color:${dcols[b]||'#ccc'}">${b}</span>`).join('');
+        dnaEl.innerHTML = [...entry.dna_seq].map((b,i) =>
+          `<span class="sb-base" data-idx="${i}" title="${b}${i+1}" style="color:${dcols[b]||'#ccc'}">${b}</span>`
+        ).join('');
       }
       if (protEl && entry.prot_seq) {
-        protEl.textContent = entry.prot_seq;
+        const seq = entry.prot_seq;
+        let ph = '';
+        for (let i = 0; i < seq.length; i++) {
+          if (i > 0 && i % 10 === 0) ph += `<span class="sb-tick">${i}</span>`;
+          ph += `<span class="sb-aa" data-idx="${i}" title="${seq[i]}${i+1}">${seq[i]}</span>`;
+        }
+        protEl.innerHTML = ph;
       }
-      sb.style.display = 'block';
+      sb.style.display = 'flex';
     }
+    // Build residue map + compute initial contact highlights
+    seqResMap = buildResidueMap(comp.structure);
+    ['hbond','pistack','saltbridge'].forEach(t => {
+      if (toggleState[t]) {
+        const {prot, dna} = computeHighlights(comp.structure, t);
+        seqHighlights[t] = {prot, dna};
+      } else {
+        delete seqHighlights[t];
+      }
+    });
+    renderSeqHighlights();
     if (showRef && entry.tier !== 'ref') loadReference();
   });
 }
@@ -736,6 +762,12 @@ function toggleRep(name) {
     };
     params[cfg.flag] = true;
     repMap[name] = mainComp.addRepresentation('contact', params);
+    // Sequence highlights for newly created rep
+    if (seqResMap) {
+      const {prot, dna} = computeHighlights(mainComp.structure, name);
+      seqHighlights[name] = {prot, dna};
+      renderSeqHighlights();
+    }
     return;
   }
 
@@ -745,6 +777,16 @@ function toggleRep(name) {
     mainComp.reprList.forEach(r => {
       if (r.name === 'ribbon') r.setVisibility(toggleState.dna);
     });
+  }
+  // Sequence highlights for contact toggles
+  if (['hbond','pistack','saltbridge'].includes(name) && mainComp && seqResMap) {
+    if (toggleState[name]) {
+      const {prot, dna} = computeHighlights(mainComp.structure, name);
+      seqHighlights[name] = {prot, dna};
+    } else {
+      delete seqHighlights[name];
+    }
+    renderSeqHighlights();
   }
 }
 
@@ -794,6 +836,7 @@ function takeScreenshot() {
 
 function clearViewer() {
   const sb = document.getElementById('seq-bar'); if(sb) sb.style.display='none';
+  seqResMap = null; Object.keys(seqHighlights).forEach(k => delete seqHighlights[k]);
   if (mainComp) { stage.removeComponent(mainComp); mainComp = null; repMap = {}; }
   if (refComp) { stage.removeComponent(refComp); refComp = null; }
   showRef = false;
@@ -988,6 +1031,85 @@ function drawLogo(container, ppm) {
 
   container.innerHTML = '';
   container.appendChild(svg);
+}
+
+
+// ════════════════════════════════════════════════════════════════
+// Sequence-contact highlighting
+// ════════════════════════════════════════════════════════════════
+function buildResidueMap(structure) {
+  const protResnos = [], dnaResnos = [];
+  structure.eachResidue(r => {
+    if (r.isProtein()) protResnos.push(r.resno);
+    else if (r.isNucleic()) dnaResnos.push(r.resno);
+  });
+  protResnos.sort((a,b) => a-b);
+  dnaResnos.sort((a,b) => a-b);
+  return {
+    protMap: new Map(protResnos.map((rn,i) => [rn, i])),
+    dnaMap:  new Map(dnaResnos.map((rn,i) => [rn, i]))
+  };
+}
+
+function computeHighlights(structure, type) {
+  if (!seqResMap) return {prot: new Set(), dna: new Set()};
+  const {protMap, dnaMap} = seqResMap;
+  const protAtoms = [], dnaAtoms = [];
+  structure.eachAtom(a => {
+    const rec = {x:a.x,y:a.y,z:a.z,resno:a.resno,resname:a.resname,atomname:a.atomname,element:a.element};
+    if (a.isProtein()) protAtoms.push(rec);
+    else if (a.isNucleic()) dnaAtoms.push(rec);
+  });
+  const protHit = new Set(), dnaHit = new Set();
+  const d2 = (a,b) => (a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
+  const mark = (p, d) => {
+    const pi = protMap.get(p.resno), di = dnaMap.get(d.resno);
+    if (pi !== undefined) protHit.add(pi);
+    if (di !== undefined) dnaHit.add(di);
+  };
+
+  if (type === 'hbond') {
+    const pd = protAtoms.filter(a => a.element==='N'||a.element==='O');
+    const dd = dnaAtoms.filter(a => a.element==='N'||a.element==='O');
+    for (const p of pd) for (const d of dd) if (d2(p,d) < 12.25) mark(p,d); // 3.5Å
+
+  } else if (type === 'pistack') {
+    const AROM = {
+      PHE:['CG','CD1','CD2','CE1','CE2','CZ'],
+      TYR:['CG','CD1','CD2','CE1','CE2','CZ'],
+      TRP:['CD2','CE2','CE3','CZ2','CZ3','CH2'],
+      HIS:['CG','ND1','CD2','CE1','NE2']
+    };
+    const BASE_ATOMS = ['N9','C8','N7','C5','C6','N1','C2','N3','C4',
+                        'C6','N6','O6','N2','O2','O4'];
+    const cen = atoms => { let x=0,y=0,z=0; atoms.forEach(a=>{x+=a.x;y+=a.y;z+=a.z;}); const n=atoms.length; return {x:x/n,y:y/n,z:z/n,resno:atoms[0].resno}; };
+    const pRings = new Map(), dRings = new Map();
+    for (const a of protAtoms) { if (AROM[a.resname]?.includes(a.atomname)) { if (!pRings.has(a.resno)) pRings.set(a.resno,[]); pRings.get(a.resno).push(a); } }
+    for (const a of dnaAtoms) { if (BASE_ATOMS.includes(a.atomname)) { if (!dRings.has(a.resno)) dRings.set(a.resno,[]); dRings.get(a.resno).push(a); } }
+    for (const pa of pRings.values()) { const pc = cen(pa); for (const da of dRings.values()) { const dc = cen(da); if (d2(pc,dc) < 30.25) { const pi=protMap.get(pc.resno),di=dnaMap.get(dc.resno); if(pi!==undefined)protHit.add(pi); if(di!==undefined)dnaHit.add(di); }}}
+
+  } else if (type === 'saltbridge') {
+    const CATION = {LYS:['NZ'], ARG:['NH1','NH2','NE'], HIS:['ND1','NE2']};
+    const pd = protAtoms.filter(a => CATION[a.resname]?.includes(a.atomname));
+    const dd = dnaAtoms.filter(a => a.atomname==='OP1'||a.atomname==='OP2');
+    for (const p of pd) for (const d of dd) if (d2(p,d) < 20.25) mark(p,d); // 4.5Å
+  }
+  return {prot: protHit, dna: dnaHit};
+}
+
+function renderSeqHighlights() {
+  // Reset all spans to base class only
+  document.querySelectorAll('.sb-aa').forEach(el => el.className = 'sb-aa');
+  document.querySelectorAll('.sb-base').forEach(el => {
+    // Preserve inline color style — only reset class
+    el.className = 'sb-base';
+  });
+  // Apply each active highlight type
+  for (const [type, {prot, dna}] of Object.entries(seqHighlights)) {
+    const cls = 'hl-' + type;
+    prot.forEach(idx => { const el = document.querySelector(`.sb-aa[data-idx="${idx}"]`); if(el) el.classList.add(cls); });
+    dna.forEach(idx  => { const el = document.querySelector(`.sb-base[data-idx="${idx}"]`); if(el) el.classList.add(cls); });
+  }
 }
 
 function buildRadar(entry, ref) {
